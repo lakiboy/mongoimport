@@ -3,6 +3,7 @@
 namespace Doctrine\MongoDB\Importer;
 
 use Doctrine\MongoDB\Connection;
+use Doctrine\MongoDB\Importer\Exception\ImportException;
 use Doctrine\MongoDB\Importer\Exception\UnsupportedFileFormatException;
 use Doctrine\MongoDB\Importer\Loader\Loader;
 
@@ -42,9 +43,10 @@ class Importer
      * @param string $name
      * @param string $filePath
      *
-     * @return int
+     * @return bool
      *
      * @throws UnsupportedFileFormatException
+     * @throws ImportException
      */
     public function importCollection($db, $name, $filePath)
     {
@@ -57,10 +59,14 @@ class Importer
         $data = $this->loaders[$format]->loadFile($filePath);
         $data = array_map('Doctrine\MongoDB\Importer\Util::replaceMongoIds', $data);
 
-        $docs = $this->mongo->selectCollection($db, $name)->batchInsert($data, [
+        $result = $this->mongo->selectCollection($db, $name)->batchInsert($data, [
             'safe' => 1,
         ]);
 
-        return count($docs);
+        if ($result['err']) {
+            throw ImportException::fromServerError($result['err']);
+        }
+
+        return (bool) $result['ok'];
     }
 }

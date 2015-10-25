@@ -26,12 +26,12 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         }
 
         static::$mongo = new Connection($server);
+        static::$mongo->dropDatabase('test');
     }
 
     public static function tearDownAfterClass()
     {
         if (static::$mongo->isConnected()) {
-            // static::$mongo->dropDatabase('test');
             static::$mongo->close();
             static::$mongo = null;
         }
@@ -44,5 +44,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     {
         $importer = new Importer(static::$mongo, [new JsonLoader()]);
         $result = $importer->importCollection('test', 'movies', __DIR__.'/../fixtures/movies.json');
+        $this->assertTrue($result);
     }
 }
