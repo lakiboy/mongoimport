@@ -1,10 +1,10 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Reader;
+namespace Doctrine\MongoDB\Importer\Loader;
 
 use Doctrine\MongoDB\Importer\Exception\InvalidImportDataException;
 
-class PrettyJsonReader extends Reader
+class JsonLoader extends Loader
 {
     private $asArray;
 
@@ -14,11 +14,19 @@ class PrettyJsonReader extends Reader
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'json';
+    }
+
+    /**
      * @param string $contents
      *
      * @return array
      */
-    protected function read($contents)
+    protected function load($contents)
     {
         $contents = static::fixJson($contents);
 
@@ -39,6 +47,6 @@ class PrettyJsonReader extends Reader
      */
     private static function fixJson($contents)
     {
-        return '['.preg_replace('/^\}$\s+\{$/m', '},{', $contents).']';
+        return '['.preg_replace('/\}$\n\{/m', '},{', $contents).']';
     }
 }

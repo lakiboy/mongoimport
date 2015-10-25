@@ -1,10 +1,10 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Reader;
+namespace Doctrine\MongoDB\Importer\Loader;
 
 use Doctrine\MongoDB\Importer\Exception\FileNotFoundException;
 
-abstract class Reader
+abstract class Loader
 {
     /**
      * @param string $filePath
@@ -13,7 +13,7 @@ abstract class Reader
      *
      * @throws FileNotFoundException
      */
-    public function readFile($filePath)
+    public function loadFile($filePath)
     {
         if (!file_exists($filePath)) {
             throw FileNotFoundException::forFile($filePath);
@@ -21,8 +21,13 @@ abstract class Reader
 
         $contents = file_get_contents($filePath);
 
-        return $this->read($contents);
+        return $this->load($contents);
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getName();
 
     /**
      * @param string $contents
@@ -31,5 +36,5 @@ abstract class Reader
      *
      * @throws \Doctrine\MongoDB\Importer\Exception\InvalidImportDataException
      */
-    abstract protected function read($contents);
+    abstract protected function load($contents);
 }
