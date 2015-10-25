@@ -24,7 +24,7 @@ class JsonLoaderTest extends \PHPUnit_Framework_TestCase
     public function it_throws_exception_on_invalid_json()
     {
         $loader = new JsonLoader();
-        $loader->loadFile(__DIR__.'/fixtures/invalid.json');
+        $loader->loadFile(dirname(__DIR__).'/fixtures/invalid.json');
     }
 
     /**
@@ -35,10 +35,10 @@ class JsonLoaderTest extends \PHPUnit_Framework_TestCase
      * @param string $fileName
      * @param int    $count
      */
-    public function it_reads_export_file_as_array($fileName, $count)
+    public function it_loads_export_file_as_array($fileName, $count)
     {
         $loader = new JsonLoader();
-        $data = $loader->loadFile(__DIR__.'/fixtures/'.$fileName);
+        $data = $loader->loadFile(dirname(__DIR__).'/fixtures/'.$fileName);
 
         $this->assertInternalType('array', $data);
         $this->assertInternalType('array', $data[0]);

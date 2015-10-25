@@ -55,6 +55,7 @@ class Importer
         }
 
         $data = $this->loaders[$format]->loadFile($filePath);
+        $data = array_map('Doctrine\MongoDB\Importer\Util::replaceMongoIds', $data);
 
         $docs = $this->mongo->selectCollection($db, $name)->batchInsert($data, [
             'safe' => 1,

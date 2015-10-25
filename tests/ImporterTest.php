@@ -36,7 +36,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_imports_collection()
+    public function it_imports_fixtures()
     {
         $mongo = $this->getConnection();
 
@@ -57,7 +57,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         ;
 
         $importer = new Importer($mongo, [new JsonLoader()]);
-        $result = $importer->importCollection('foo', 'bar', __DIR__.'/Loader/fixtures/movies.json');
+        $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/movies.json');
 
         $this->assertEquals(3, $result);
     }
