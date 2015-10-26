@@ -1,13 +1,13 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Tests\Loader;
+namespace Devmachine\MongoImport\Tests\Loader;
 
-use Doctrine\MongoDB\Importer\Loader\JsonLoader;
+use Devmachine\MongoImport\Loader\JsonLoader;
 
 class JsonLoaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Doctrine\MongoDB\Importer\Exception\FileNotFoundException
+     * @expectedException \Devmachine\MongoImport\Exception\FileNotFoundException
      * @expectedExceptionMessage File "__missing__" not found.
      */
     public function it_throws_exception_on_missing_file()
@@ -17,7 +17,7 @@ class JsonLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Doctrine\MongoDB\Importer\Exception\InvalidImportDataException
+     * @expectedException \Devmachine\MongoImport\Exception\InvalidImportDataException
      * @expectedExceptionCode 4
      * @expectedExceptionMessage Unable to decode json: Syntax error
      */

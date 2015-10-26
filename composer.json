@@ -1,6 +1,6 @@
 
 {
-    "name": "devmachine/doctrine-mongodb-importer",
+    "name": "devmachine/mongoimport",
     "type": "library",
     "description": "Import MongoDB export into Doctrine.",
     "keywords": [ "mongodb", "doctrine", "import" ],
@@ -17,10 +17,10 @@
         "phpunit/phpunit": "^4.5"
     },
     "autoload": {
-        "psr-4": { "Doctrine\\MongoDB\\Importer\\": "src/" }
+        "psr-4": { "Devmachine\\MongoImport\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Doctrine\\MongoDB\\Importer\\Tests\\": "tests/" }
+        "psr-4": { "Devmachine\\MongoImport\\Tests\\": "tests/" }
     },
     "config": {
         "bin-dir": "bin"

@@ -1,9 +1,9 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Tests;
+namespace Devmachine\MongoImport\Tests;
 
-use Doctrine\MongoDB\Importer\Importer;
-use Doctrine\MongoDB\Importer\Loader\JsonLoader;
+use Devmachine\MongoImport\Importer;
+use Devmachine\MongoImport\Loader\JsonLoader;
 
 class ImporterTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @expectedException \Doctrine\MongoDB\Importer\Exception\UnsupportedFileFormatException
+     * @expectedException \Devmachine\MongoImport\Exception\UnsupportedFileFormatException
      * @expectedExceptionMessage File of format "txt" is not supported.
      */
     public function it_throws_exception_on_unsupported_file_format()
@@ -65,7 +65,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @expectedException \Doctrine\MongoDB\Importer\Exception\ImportException
+     * @expectedException \Devmachine\MongoImport\Exception\ImportException
      * @expectedExceptionMessage Unable to import data: Something went wrong
      */
     public function it_throws_exception_on_import_error()

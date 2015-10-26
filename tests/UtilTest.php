@@ -1,8 +1,8 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Tests;
+namespace Devmachine\MongoImport\Tests;
 
-use Doctrine\MongoDB\Importer\Util;
+use Devmachine\MongoImport\Util;
 
 class UtilTest extends \PHPUnit_Framework_TestCase
 {

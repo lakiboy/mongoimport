@@ -1,11 +1,11 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer;
+namespace Devmachine\MongoImport;
 
+use Devmachine\MongoImport\Exception\ImportException;
+use Devmachine\MongoImport\Exception\UnsupportedFileFormatException;
+use Devmachine\MongoImport\Loader\Loader;
 use Doctrine\MongoDB\Connection;
-use Doctrine\MongoDB\Importer\Exception\ImportException;
-use Doctrine\MongoDB\Importer\Exception\UnsupportedFileFormatException;
-use Doctrine\MongoDB\Importer\Loader\Loader;
 
 class Importer
 {
@@ -57,7 +57,7 @@ class Importer
         }
 
         $data = $this->loaders[$format]->loadFile($filePath);
-        $data = array_map('Doctrine\MongoDB\Importer\Util::replaceMongoIds', $data);
+        $data = array_map('Devmachine\MongoImport\Util::replaceMongoIds', $data);
 
         $result = $this->mongo->selectCollection($db, $name)->batchInsert($data, [
             'safe' => 1,

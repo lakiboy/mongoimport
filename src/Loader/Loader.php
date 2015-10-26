@@ -1,8 +1,8 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Loader;
+namespace Devmachine\MongoImport\Loader;
 
-use Doctrine\MongoDB\Importer\Exception\FileNotFoundException;
+use Devmachine\MongoImport\Exception\FileNotFoundException;
 
 abstract class Loader
 {
@@ -34,7 +34,7 @@ abstract class Loader
      *
      * @return array
      *
-     * @throws \Doctrine\MongoDB\Importer\Exception\InvalidImportDataException
+     * @throws \Devmachine\MongoImport\Exception\InvalidImportDataException
      */
     abstract protected function load($contents);
 }

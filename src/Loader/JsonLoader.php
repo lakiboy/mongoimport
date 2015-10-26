@@ -1,8 +1,8 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Loader;
+namespace Devmachine\MongoImport\Loader;
 
-use Doctrine\MongoDB\Importer\Exception\InvalidImportDataException;
+use Devmachine\MongoImport\Exception\InvalidImportDataException;
 
 class JsonLoader extends Loader
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Tests\Functional;
+namespace Devmachine\MongoImport\Tests\Functional;
 
+use Devmachine\MongoImport\Importer;
+use Devmachine\MongoImport\Loader\JsonLoader;
 use Doctrine\MongoDB\Connection;
-use Doctrine\MongoDB\Importer\Importer;
-use Doctrine\MongoDB\Importer\Loader\JsonLoader;
 
 /**
  * @group functional

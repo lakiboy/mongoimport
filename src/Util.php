@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer;
+namespace Devmachine\MongoImport;
 
 final class Util
 {

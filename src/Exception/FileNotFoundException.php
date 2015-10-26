@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\MongoDB\Importer\Exception;
+namespace Devmachine\MongoImport\Exception;
 
 class FileNotFoundException extends \InvalidArgumentException
 {
