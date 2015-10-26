@@ -36,7 +36,34 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
+     * @expectedException \Devmachine\MongoImport\Exception\ImportException
+     * @expectedExceptionMessage Unable to import data: Something went wrong
      */
+    public function it_throws_exception_on_import_error()
+    {
+        $collection = $this->getMockBuilder('Doctrine\MongoDB\Collection')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $collection->method('batchInsert')->willReturn([
+            'ok' => 0,
+            'err' => 'Something went wrong',
+        ]);
+        $mongo = $this->getMockBuilder('Doctrine\MongoDB\Connection')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $mongo
+            ->method('selectCollection')
+            ->with($this->equalTo('foo'), $this->equalTo('bar'))
+            ->willReturn($collection)
+        ;
+
+        $importer = new Importer($mongo, [new JsonLoader()]);
+        $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/offices.json');
+    }
+
     public function it_imports_fixtures()
     {
         $mongo = $this->getConnection();
@@ -61,46 +88,5 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/movies.json');
 
         $this->assertTrue($result);
-    }
-
-    /**
-     * @test
-     *
-     * @expectedException \Devmachine\MongoImport\Exception\ImportException
-     * @expectedExceptionMessage Unable to import data: Something went wrong
-     */
-    public function it_throws_exception_on_import_error()
-    {
-        $mongo = $this->getConnection();
-
-        $collection = $this->getMockBuilder('Doctrine\MongoDB\Collection')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $mongo
-            ->expects($this->once())
-            ->method('selectCollection')
-            ->with($this->equalTo('foo'), $this->equalTo('bar'))
-            ->willReturn($collection)
-        ;
-        $collection
-            ->expects($this->once())
-            ->method('batchInsert')
-            ->willReturn(['ok' => 0, 'err' => 'Something went wrong'])
-        ;
-
-        $importer = new Importer($mongo, [new JsonLoader()]);
-        $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/movies.json');
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getConnection()
-    {
-        return $this->getMockBuilder('Doctrine\MongoDB\Connection')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
     }
 }
