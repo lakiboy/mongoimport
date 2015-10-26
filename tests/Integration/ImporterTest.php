@@ -1,13 +1,13 @@
 <?php
 
-namespace Devmachine\MongoImport\Tests\Functional;
+namespace Devmachine\MongoImport\Tests\Integration;
 
 use Devmachine\MongoImport\Importer;
 use Devmachine\MongoImport\Loader\JsonLoader;
 use Doctrine\MongoDB\Connection;
 
 /**
- * @group functional
+ * @group integration
  */
 class ImporterTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +22,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         // Check if running in Docker.
         if (($host = getenv('MONGO_PORT_27017_TCP_ADDR')) && ($port = getenv('MONGO_PORT_27017_TCP_PORT'))) {
-            $server = sprintf('mongodb://%s:%d', $host, $port);
+            $server = sprintf('%s:%d', $host, $port);
         }
 
         static::$mongo = new Connection($server);
