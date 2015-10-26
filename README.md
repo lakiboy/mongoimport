@@ -5,7 +5,7 @@
 ##### Init
 
 ```bash
-$ docker-composer up -d # puts mongo container on bg
+$ docker-composer up -d # puts mongo container in bg
 ```
 
 ##### Load fixtures

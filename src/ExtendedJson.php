@@ -146,22 +146,17 @@ final class ExtendedJson
         return;
     }
 
-/*
-public static function replaceMongoIds(array $doc)
-{
-    foreach ($doc as $key => $val) {
-        if (is_array($val)) {
-            if (isset($val['$oid'])) {
-                $doc[$key] = new \MongoId($val['$oid']);
-            } else {
-                $doc[$key] = self::replaceMongoIds($val);
-            }
-        }
+    /**
+     * @todo Implement this.
+     *
+     * @param array $doc
+     *
+     * @return array
+     */
+    public static function fromStrict(array $doc)
+    {
+        return $doc;
     }
-
-    return $doc;
-}
-*/
 
     private function __construct()
     {

@@ -57,10 +57,7 @@ class Importer
         }
 
         $data = $this->loaders[$format]->loadFile($filePath);
-
-        /*
-        $data = array_map('Devmachine\MongoImport\Util::replaceMongoIds', $data);
-        */
+        $data = array_map('Devmachine\MongoImport\ExtendedJson::fromStrict', $data);
 
         $result = $this->mongo->selectCollection($db, $name)->batchInsert($data, [
             'safe' => 1,
