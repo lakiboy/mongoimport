@@ -1,0 +1,231 @@
+[{
+	"_id": {
+		"$oid": "562e84e58d20d401008b456a"
+	},
+	"age": {
+		"$numberLong": "41"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Llewellyn",
+	"last_name": "Christiansen",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4567"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2013-03-20T03:09:26.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b456b"
+	},
+	"age": {
+		"$numberLong": "23"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Damaris",
+	"last_name": "Tromp",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4569"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2011-04-18T08:50:17.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b456c"
+	},
+	"age": {
+		"$numberLong": "41"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Colby",
+	"last_name": "Sanford",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4569"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2014-07-14T20:39:53.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b456d"
+	},
+	"age": {
+		"$numberLong": "54"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Suzanne",
+	"last_name": "Sanford",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4567"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2010-05-10T15:35:05.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b456e"
+	},
+	"age": {
+		"$numberLong": "41"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Lydia",
+	"last_name": "Stracke",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4568"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2014-07-12T23:40:48.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b456f"
+	},
+	"age": {
+		"$numberLong": "18"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Sylvia",
+	"last_name": "Windler",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4569"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2012-09-20T20:23:25.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b4570"
+	},
+	"age": {
+		"$numberLong": "37"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Archibald",
+	"last_name": "Christiansen",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4569"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2011-06-14T15:52:57.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b4571"
+	},
+	"age": {
+		"$numberLong": "18"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Adam",
+	"last_name": "Lind",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4569"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2010-07-28T07:30:09.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b4572"
+	},
+	"age": {
+		"$numberLong": "46"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Rahsaan",
+	"last_name": "Pouros",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4568"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2011-09-10T17:07:28.000Z"
+	}
+},
+{
+	"_id": {
+		"$oid": "562e84e58d20d401008b4573"
+	},
+	"age": {
+		"$numberLong": "23"
+	},
+	"avatar": {
+		"$binary": "X19kYXRhX18=",
+		"$type": "00"
+	},
+	"first_name": "Kameron",
+	"last_name": "Weber",
+	"office": {
+		"$id": {
+			"$oid": "562e84e58d20d401008b4569"
+		},
+		"$ref": "offices"
+	},
+	"signed_at": {
+		"$date": "2007-10-12T03:24:56.000Z"
+	}
+}]
+

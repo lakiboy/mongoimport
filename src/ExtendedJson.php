@@ -38,6 +38,19 @@ final class ExtendedJson
     /**
      * @param array $data
      *
+     * @return \MongoRegex
+     */
+    public static function toRegex(array $data)
+    {
+        Assertion::keyExists($data, '$regex');
+        Assertion::keyExists($data, '$options');
+
+        return new \MongoRegex('/'.$data['$regex'].'/'.$data['$options']);
+    }
+
+    /**
+     * @param array $data
+     *
      * @return \MongoBinData
      */
     public static function toBinData(array $data)
@@ -77,7 +90,9 @@ final class ExtendedJson
         Assertion::keyExists($data, '$ref');
         Assertion::keyExists($data, '$id');
 
-        return new \MongoDBRef($data['$ref'], $data['$id']);
+        $db = isset($data['$db']) ? $data['$db'] : null;
+
+        return new \MongoDBRef($data['$ref'], $data['$id'], $db);
     }
 
     /**
@@ -88,6 +103,7 @@ final class ExtendedJson
     public static function toMinKey(array $data)
     {
         Assertion::keyExists($data, '$minKey');
+        Assertion::same($data['$minKey'], 1);
 
         return new \MongoMinKey();
     }
@@ -100,6 +116,7 @@ final class ExtendedJson
     public static function toMaxKey(array $data)
     {
         Assertion::keyExists($data, '$maxKey');
+        Assertion::same($data['$maxKey'], 1);
 
         return new \MongoMaxKey();
     }
@@ -118,22 +135,33 @@ final class ExtendedJson
         return new \MongoTimestamp($data['$timestamp']['t'], $data['$timestamp']['i']);
     }
 
-    /*
-    public static function replaceMongoIds(array $doc)
+    /**
+     * @param array $data
+     */
+    public static function toUndefined(array $data)
     {
-        foreach ($doc as $key => $val) {
-            if (is_array($val)) {
-                if (isset($val['$oid'])) {
-                    $doc[$key] = new \MongoId($val['$oid']);
-                } else {
-                    $doc[$key] = self::replaceMongoIds($val);
-                }
+        Assertion::keyExists($data, '$undefined');
+        Assertion::true($data['$undefined']);
+
+        return;
+    }
+
+/*
+public static function replaceMongoIds(array $doc)
+{
+    foreach ($doc as $key => $val) {
+        if (is_array($val)) {
+            if (isset($val['$oid'])) {
+                $doc[$key] = new \MongoId($val['$oid']);
+            } else {
+                $doc[$key] = self::replaceMongoIds($val);
             }
         }
-
-        return $doc;
     }
-    */
+
+    return $doc;
+}
+*/
 
     private function __construct()
     {

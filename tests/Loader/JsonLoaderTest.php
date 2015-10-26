@@ -7,6 +7,8 @@ use Devmachine\MongoImport\Loader\JsonLoader;
 class JsonLoaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @test
+     *
      * @expectedException \Devmachine\MongoImport\Exception\FileNotFoundException
      * @expectedExceptionMessage File "__missing__" not found.
      */
@@ -17,6 +19,8 @@ class JsonLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     *
      * @expectedException \Devmachine\MongoImport\Exception\InvalidImportDataException
      * @expectedExceptionCode 4
      * @expectedExceptionMessage Unable to decode json: Syntax error
@@ -48,8 +52,8 @@ class JsonLoaderTest extends \PHPUnit_Framework_TestCase
     public function getFiles()
     {
         return [
-            ['movies.pretty.json', 5],
-            ['movies.json', 8],
+            ['employees.json', 10],
+            ['offices.json', 3],
         ];
     }
 }

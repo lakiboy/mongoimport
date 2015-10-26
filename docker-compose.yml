@@ -1,0 +1,12 @@
+composer:
+    build: composer
+    links:
+        - mongo
+    volumes:
+        - .:/app
+
+mongo:
+    image: mongo:3.0
+    ports:
+        - 28017:27017
+    command: --smallfiles --rest --httpinterface

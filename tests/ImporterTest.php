@@ -4,6 +4,7 @@ namespace Devmachine\MongoImport\Tests;
 
 use Devmachine\MongoImport\Importer;
 use Devmachine\MongoImport\Loader\JsonLoader;
+use Doctrine\MongoDB\Connection;
 
 class ImporterTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,7 +13,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_registers_loaders()
     {
-        $importer = new Importer($this->getConnection());
+        $importer = new Importer(new Connection());
         $importer->addLoader($loader = new JsonLoader());
 
         $loaders = $importer->getLoaders();
@@ -29,7 +30,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throws_exception_on_unsupported_file_format()
     {
-        $importer = new Importer($this->getConnection());
+        $importer = new Importer(new Connection());
         $importer->importCollection('foo', 'bar', 'file.txt');
     }
 

@@ -11,5 +11,6 @@ class CsvLoader extends Loader
 
     protected function load($contents)
     {
+        throw new \RuntimeException(__METHOD__.' not implemented');
     }
 }
