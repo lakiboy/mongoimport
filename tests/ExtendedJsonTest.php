@@ -80,13 +80,24 @@ class ExtendedJsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_converts_to_db_ref()
+    public function it_converts_to_valid_ref()
     {
-        $ref = ExtendedJson::toDBRef(['$ref' => 'items', '$id' => '562e74680eabe601008b4567']);
-        $this->assertInstanceOf('MongoDBRef', $ref);
+        $ref = ExtendedJson::toRef([
+            '$ref' => 'items',
+            '$id' => [
+                '$oid' => '562e74680eabe601008b4567',
+            ],
+        ]);
 
-        $ref = ExtendedJson::toDBRef(['$ref' => 'items', '$id' => '562e74680eabe601008b4567', '$db' => 'test']);
-        $this->assertInstanceOf('MongoDBRef', $ref);
+        $this->assertInternalType('array', $ref);
+        $this->assertInstanceOf('MongoId', $ref['$id']);
+        $this->assertEquals('items', $ref['$ref']);
+
+        $ref = ExtendedJson::toRef(['$ref' => 'items', '$id' => '562e74680eabe601008b4567', '$db' => 'test']);
+
+        $this->assertEquals('562e74680eabe601008b4567', $ref['$id']);
+        $this->assertEquals('items', $ref['$ref']);
+        $this->assertEquals('test', $ref['$db']);
     }
 
     /**
@@ -132,6 +143,46 @@ class ExtendedJsonTest extends \PHPUnit_Framework_TestCase
         $undefined = ExtendedJson::toUndefined(['$undefined' => true]);
 
         $this->assertNull($undefined);
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_from_strict()
+    {
+        $data = [
+            '_id' => [
+                '$oid' => '562e84e58d20d401008b4573',
+            ],
+            'age' => [
+                '$numberLong' => '23',
+            ],
+            'avatar' => [
+                '$binary' => 'X19kYXRhX18=',
+                '$type' => '00',
+            ],
+            'first_name' => 'Kameron',
+            'last_name' => 'Weber',
+            'office' => [
+                '$id' => [
+                    '$oid' => '562e84e58d20d401008b4569',
+                ],
+                '$ref' => 'offices',
+            ],
+            'signed_at' => [
+                '$date' => '2007-10-12T03:24:56.000Z',
+            ],
+        ];
+
+        $doc = ExtendedJson::fromStrict($data);
+
+        $this->assertInstanceOf('MongoId', $doc['_id']);
+        $this->assertSame(23, $doc['age']);
+        $this->assertInstanceOf('MongoBinData', $doc['avatar']);
+        $this->assertEquals('Kameron', $doc['first_name']);
+        $this->assertEquals('Weber', $doc['last_name']);
+        $this->assertInternalType('array', $doc['office']);
+        $this->assertInstanceOf('MongoDate', $doc['signed_at']);
     }
 
     /**

@@ -42,14 +42,46 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throws_exception_on_import_error()
     {
+        $mongo = $this->getMongoStubWithResult([
+            'ok' => 0,
+            'err' => 'Something went wrong',
+        ]);
+
+        $importer = new Importer($mongo, [new JsonLoader()]);
+        $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/offices.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_fixtures()
+    {
+        $mongo = $this->getMongoStubWithResult([
+            'ok' => 1,
+            'err' => null,
+        ]);
+
+        $importer = new Importer($mongo, [new JsonLoader()]);
+        $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/employees.json');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @param array $result
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMongoStubWithResult(array $result)
+    {
         $collection = $this->getMockBuilder('Doctrine\MongoDB\Collection')
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $collection->method('batchInsert')->willReturn([
-            'ok' => 0,
-            'err' => 'Something went wrong',
-        ]);
+        $collection
+            ->method('batchInsert')
+            ->willReturn($result)
+        ;
         $mongo = $this->getMockBuilder('Doctrine\MongoDB\Connection')
             ->disableOriginalConstructor()
             ->getMock()
@@ -60,33 +92,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->willReturn($collection)
         ;
 
-        $importer = new Importer($mongo, [new JsonLoader()]);
-        $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/offices.json');
-    }
-
-    public function it_imports_fixtures()
-    {
-        $mongo = $this->getConnection();
-
-        $collection = $this->getMockBuilder('Doctrine\MongoDB\Collection')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $mongo
-            ->expects($this->once())
-            ->method('selectCollection')
-            ->with($this->equalTo('foo'), $this->equalTo('bar'))
-            ->willReturn($collection)
-        ;
-        $collection
-            ->expects($this->once())
-            ->method('batchInsert')
-            ->willReturn(['ok' => 1, 'err' => null])
-        ;
-
-        $importer = new Importer($mongo, [new JsonLoader()]);
-        $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/movies.json');
-
-        $this->assertTrue($result);
+        return $mongo;
     }
 }

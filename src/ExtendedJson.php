@@ -9,6 +9,8 @@ use Assert\Assertion;
  */
 final class ExtendedJson
 {
+    private static $ids = ['$oid', '$binary', '$id', '$date', '$regex', '$numberLong', '$timestamp', '$undefined', '$minKey', '$maxKey'];
+
     /**
      * @param array $data
      *
@@ -83,16 +85,20 @@ final class ExtendedJson
     /**
      * @param array $data
      *
-     * @return \MongoDBRef
+     * @return array
      */
-    public static function toDBRef(array $data)
+    public static function toRef(array $data)
     {
         Assertion::keyExists($data, '$ref');
         Assertion::keyExists($data, '$id');
 
-        $db = isset($data['$db']) ? $data['$db'] : null;
+        $id = is_scalar($data['$id']) ? $data['$id'] : self::fromStrict($data['$id']);
 
-        return new \MongoDBRef($data['$ref'], $data['$id'], $db);
+        if (!empty($data['$db'])) {
+            return \MongoDBRef::create($data['$ref'], $id, $data['$db']);
+        }
+
+        return \MongoDBRef::create($data['$ref'], $id);
     }
 
     /**
@@ -142,19 +148,59 @@ final class ExtendedJson
     {
         Assertion::keyExists($data, '$undefined');
         Assertion::true($data['$undefined']);
-
-        return;
     }
 
     /**
-     * @todo Implement this.
+     * @param array $data
      *
+     * @return mixed
+     */
+    public static function toPhpValue(array $data)
+    {
+        if (isset($data['$oid'])) {
+            $result = self::toObjectId($data);
+        } elseif (isset($data['$binary'])) {
+            $result = self::toBinData($data);
+        } elseif (isset($data['$id']) && isset($data['$ref'])) {
+            $result = self::toRef($data);
+        } elseif (isset($data['$date'])) {
+            $result = self::toDate($data);
+        } elseif (isset($data['$regex'])) {
+            $result = self::toRegex($data);
+        } elseif (isset($data['$numberLong'])) {
+            $result = self::toLong($data);
+        } elseif (isset($data['$timestamp'])) {
+            $result = self::toTimestamp($data);
+        } elseif (isset($data['$undefined'])) {
+            $result = self::toUndefined($data);
+        } elseif (isset($data['$minKey'])) {
+            $result = self::toMinKey($data);
+        } elseif (isset($data['$maxKey'])) {
+            $result = self::toMaxKey($data);
+        } else {
+            $result = $data;
+        }
+
+        return $result;
+    }
+
+    /**
      * @param array $doc
      *
      * @return array
      */
     public static function fromStrict(array $doc)
     {
+        if (in_array($key = key($doc), self::$ids)) {
+            return self::toPhpValue($doc);
+        }
+
+        foreach ($doc as $key => $val) {
+            if (is_array($val)) {
+                $doc[$key] = self::fromStrict($val);
+            }
+        }
+
         return $doc;
     }
 
