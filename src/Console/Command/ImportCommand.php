@@ -52,12 +52,19 @@ class ImportCommand extends Command
             $port = getenv('MONGO_PORT_27017_TCP_PORT') ?: 27017;
         }
 
+        if (!$col) {
+            $col = pathinfo($file, PATHINFO_BASENAME);
+            if (false !== ($pos = strrpos($col, '.'))) {
+                $col = substr($col, 0, $pos);
+            }
+        }
+
         $total = (new ImporterBuilder())
             ->setHost($host)
             ->setPort($port)
             ->setDrop($drop)
             ->getImporter()
-            ->importCollection($db, $col ?: pathinfo($file, PATHINFO_BASENAME), $file)
+            ->importCollection($db, $col, $file)
         ;
 
         $output->writeln(sprintf('<info>Docs inserted: %d</info>', $total));
