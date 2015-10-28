@@ -1,5 +1,7 @@
 # mongoimport
 
+[![Build Status](https://travis-ci.org/dev-machine/mongoimport.svg)](https://travis-ci.org/dev-machine/mongoimport) [![Coverage Status](https://coveralls.io/repos/dev-machine/mongoimport/badge.svg?branch=master&service=github)](https://coveralls.io/github/dev-machine/mongoimport?branch=master)
+
 ## Running in Docker
 
 ##### Init
