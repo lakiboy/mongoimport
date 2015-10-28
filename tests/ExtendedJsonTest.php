@@ -172,6 +172,9 @@ class ExtendedJsonTest extends \PHPUnit_Framework_TestCase
             'signed_at' => [
                 '$date' => '2007-10-12T03:24:56.000Z',
             ],
+            'nothing' => [
+                '$undefined' => true,
+            ],
         ];
 
         $doc = ExtendedJson::fromStrict($data);
@@ -183,6 +186,8 @@ class ExtendedJsonTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Weber', $doc['last_name']);
         $this->assertInternalType('array', $doc['office']);
         $this->assertInstanceOf('MongoDate', $doc['signed_at']);
+        $this->assertArrayHasKey('nothing', $doc);
+        $this->assertNull($doc['nothing']);
     }
 
     /**

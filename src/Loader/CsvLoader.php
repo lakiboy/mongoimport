@@ -2,6 +2,9 @@
 
 namespace Devmachine\MongoImport\Loader;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CsvLoader extends Loader
 {
     public function getName()

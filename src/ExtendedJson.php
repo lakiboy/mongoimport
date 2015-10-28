@@ -204,6 +204,9 @@ final class ExtendedJson
         return $doc;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
     }
