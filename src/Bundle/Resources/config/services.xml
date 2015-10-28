@@ -5,7 +5,7 @@
 
     <services>
 
-        <service id="mongoimport.importer.factory" class="Devmachine\MongoImport\Bundle\ImporterFactory">
+        <service id="mongoimport.importer.factory" class="Devmachine\MongoImport\Bundle\ImporterFactory" public="false">
             <argument type="service" id="doctrine_mongodb" />
             <argument type="collection">
                 <argument type="service" id="mongoimport.loader.json" />
