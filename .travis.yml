@@ -12,13 +12,13 @@ php:
 
 before_install:
     - composer self-update
+    - echo 'extension = "mongo.so"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 install:
     - composer install --no-progress
 
 before_script:
     - sleep 5 # Ensure mongodb accepts a connection
-    - echo 'extension = "mongo.so"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 after_script:
     - bin/coveralls
