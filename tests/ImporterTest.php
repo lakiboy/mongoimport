@@ -64,7 +64,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $importer = new Importer($mongo, [new JsonLoader()]);
         $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/employees.json');
 
-        $this->assertTrue($result);
+        $this->assertSame(10, $result);
     }
 
     /**

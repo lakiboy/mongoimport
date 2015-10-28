@@ -43,7 +43,7 @@ class Importer
      * @param string $name
      * @param string $filePath
      *
-     * @return bool
+     * @return int
      *
      * @throws UnsupportedFileFormatException
      * @throws ImportException
@@ -67,6 +67,6 @@ class Importer
             throw ImportException::fromServerError($result['err']);
         }
 
-        return (bool) $result['ok'];
+        return count($data);
     }
 }
