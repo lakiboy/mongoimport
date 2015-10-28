@@ -10,7 +10,7 @@ class InvalidImportDataException extends \RuntimeException
      *
      * @return static
      */
-    public static function fromJson($code, $cause = null)
+    public static function fromError($code, $cause = null)
     {
         if (!$cause) {
             switch ($code) {

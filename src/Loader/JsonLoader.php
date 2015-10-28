@@ -22,7 +22,7 @@ class JsonLoader extends Loader
     protected function load($contents)
     {
         if (null === $data = json_decode($contents, true)) {
-            throw InvalidImportDataException::fromJson(json_last_error());
+            throw InvalidImportDataException::fromError(json_last_error());
         }
 
         return $data;
