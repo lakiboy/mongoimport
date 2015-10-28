@@ -1,5 +1,6 @@
 /.idea
-/bin
+/bin/*
+!bin/mongoimport
 /build
 /vendor
 /composer.lock

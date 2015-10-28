@@ -5,14 +5,14 @@ namespace Devmachine\MongoImport\Exception;
 class InvalidImportDataException extends \RuntimeException
 {
     /**
-     * @param int    $code
-     * @param string $cause
+     * @param int         $code
+     * @param string|bool $cause
      *
      * @return static
      */
-    public static function fromError($code, $cause = null)
+    public static function fromError($code, $cause = false)
     {
-        if (!$cause) {
+        if (empty($cause)) {
             switch ($code) {
                 case JSON_ERROR_DEPTH:
                     $cause = 'Maximum stack depth exceeded';

@@ -16,6 +16,8 @@ class Importer
      */
     private $loaders = [];
 
+    private $drop = false;
+
     public function __construct(Connection $mongo, array $loaders = [])
     {
         $this->mongo = $mongo;
@@ -39,6 +41,14 @@ class Importer
     }
 
     /**
+     * @param bool $drop
+     */
+    public function setDrop($drop)
+    {
+        $this->drop = $drop;
+    }
+
+    /**
      * @param string $db
      * @param string $name
      * @param string $filePath
@@ -59,9 +69,13 @@ class Importer
         $data = $this->loaders[$format]->loadFile($filePath);
         $data = array_map('Devmachine\MongoImport\ExtendedJson::fromStrict', $data);
 
-        $result = $this->mongo->selectCollection($db, $name)->batchInsert($data, [
-            'safe' => 1,
-        ]);
+        $col = $this->mongo->selectCollection($db, $name);
+
+        if ($this->drop) {
+            $col->drop();
+        }
+
+        $result = $col->batchInsert($data, ['safe' => 1]);
 
         if ($result['err']) {
             throw ImportException::fromServerError($result['err']);

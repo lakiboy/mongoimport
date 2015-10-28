@@ -25,6 +25,7 @@
     "autoload-dev": {
         "psr-4": { "Devmachine\\MongoImport\\Tests\\": "tests/" }
     },
+    "bin": ["bin/mongoimport"],
     "config": {
         "bin-dir": "bin"
     },
