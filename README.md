@@ -4,6 +4,46 @@
 
 PHP implementation of [mongoimport](https://docs.mongodb.org/manual/reference/program/mongoimport/).
 
+## About
+
+Why would you need a custom _mongoimport_ instead of default utility supplied with mongo? In certain setup (read Docker) mongo client is not available. With _mongo_ extension enabled in PHP, you can import JSON created by mongoexport with this tiny library.
+
+## Installation 
+
+Add the following to your composer.json:
+
+```javascript
+{
+    "require": {
+        "devmachine/mongoimport": "~1.0"
+    }
+}
+```
+
+## Usage
+
+Import _movies.json_ into _cinema_ database. Basename of filename without extension was used as a collection name.
+
+```bash
+$ ./bin/mongoimport movies.json --db hollywood
+```
+
+By default utility connects to mongod running on `localhost:_27017_`. In docker environment default host is `MONGO_PORT_27017_TCP_ADDR` and default port is `MONGO_PORT_27017_TCP_PORT`.
+
+Specifying custom host, port and collection name:
+
+```bash
+$ ./bin/mongoimport movies.json -c shows --db hollywood --host <host> -p <port>
+```
+
+To drop existing collection prior to import, use `--drop` flag.
+
+For more info use:
+
+```bash
+$ ./bin/mongoimport -h
+```
+
 ## Running in Docker
 
 ##### Init
