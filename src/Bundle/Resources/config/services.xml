@@ -20,7 +20,7 @@
 
         <!-- Builders -->
 
-        <service id="mongoimport.importer"
+        <service id="mongoimport.importer_abstract"
                  class="Devmachine\MongoImport\Importer"
                  abstract="true">
             <factory service="mongoimport.importer.factory" method="getImporter" />

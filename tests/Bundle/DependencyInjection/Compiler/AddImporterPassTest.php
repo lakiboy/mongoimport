@@ -40,10 +40,12 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithParent('mongoimport.importer.foo', 'mongoimport.importer');
+        $this->assertContainerBuilderHasServiceDefinitionWithParent('mongoimport.importer.foo', 'mongoimport.importer_abstract');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('mongoimport.importer.foo', 'foo');
 
-        $this->assertContainerBuilderHasServiceDefinitionWithParent('mongoimport.importer.bar', 'mongoimport.importer');
+        $this->assertContainerBuilderHasServiceDefinitionWithParent('mongoimport.importer.bar', 'mongoimport.importer_abstract');
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('mongoimport.importer.bar', 'bar');
+
+        $this->assertContainerBuilderHasAlias('mongoimport.importer', 'mongoimport.importer.foo');
     }
 }

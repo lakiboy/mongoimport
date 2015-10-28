@@ -15,11 +15,14 @@ class AddImporterPass implements CompilerPassInterface
         }
 
         $names = array_keys($container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.connections%'));
+        $default = $container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.default_connection%');
 
         foreach ($names as $name) {
-            $decorator = new DefinitionDecorator('mongoimport.importer');
+            $decorator = new DefinitionDecorator('mongoimport.importer_abstract');
             $decorator->replaceArgument(0, $name);
             $container->setDefinition('mongoimport.importer.'.$name, $decorator);
         }
+
+        $container->setAlias('mongoimport.importer', 'mongoimport.importer.'.$default);
     }
 }
