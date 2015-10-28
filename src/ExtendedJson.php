@@ -191,7 +191,9 @@ final class ExtendedJson
      */
     public static function fromStrict(array $doc)
     {
-        if (in_array($key = key($doc), self::$ids)) {
+        $key = key($doc);
+
+        if (in_array($key, self::$ids, true)) {
             return self::toPhpValue($doc);
         }
 

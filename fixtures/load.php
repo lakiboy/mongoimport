@@ -1,10 +1,4 @@
 <?php
-/**
- * Create fixtures.
- *
- * $ mongoexport --db company --collection employees --jsonArray --pretty --out employees.json
- * $ mongoexport --db company --collection offices --jsonArray --pretty --out offices.json
- */
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 

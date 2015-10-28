@@ -175,6 +175,16 @@ class ExtendedJsonTest extends \PHPUnit_Framework_TestCase
             'nothing' => [
                 '$undefined' => true,
             ],
+            'validations' => [
+                'home' => [
+                    '$regex' => '^+371 67',
+                    '$options' => '',
+                ],
+                'mobile' => [
+                    '$regex' => '^+371 2',
+                    '$options' => '',
+                ],
+            ],
         ];
 
         $doc = ExtendedJson::fromStrict($data);
@@ -188,6 +198,8 @@ class ExtendedJsonTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('MongoDate', $doc['signed_at']);
         $this->assertArrayHasKey('nothing', $doc);
         $this->assertNull($doc['nothing']);
+        $this->assertInstanceOf('MongoRegex', $doc['validations']['home']);
+        $this->assertInstanceOf('MongoRegex', $doc['validations']['mobile']);
     }
 
     /**
