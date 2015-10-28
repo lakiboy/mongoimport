@@ -12,7 +12,7 @@ class ImporterBuilder
     private $drop = false;
 
     /**
-     * @param string $port
+     * @param int $port
      *
      * @return self
      */

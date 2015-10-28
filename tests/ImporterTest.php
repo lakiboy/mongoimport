@@ -68,11 +68,25 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_drops_db_and_imports_fixtures()
+    {
+        $mongo = $this->getMongoStubWithResult(['ok' => 1, 'err' => null], true);
+
+        $importer = new Importer($mongo, [new JsonLoader()]);
+        $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/employees.json');
+
+        $this->assertSame(10, $result);
+    }
+
+    /**
      * @param array $result
+     * @param bool  $drop
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function getMongoStubWithResult(array $result)
+    private function getMongoStubWithResult(array $result, $drop = false)
     {
         $collection = $this->getMockBuilder('Doctrine\MongoDB\Collection')
             ->disableOriginalConstructor()
@@ -91,6 +105,12 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('foo'), $this->equalTo('bar'))
             ->willReturn($collection)
         ;
+
+        if ($drop) {
+            $collection->method('drop');
+        } else {
+            $collection->expects($this->never())->method('drop');
+        }
 
         return $mongo;
     }
