@@ -1,5 +1,8 @@
 language: php
 
+services:
+    - mongodb
+
 php:
     - 5.4
     - 5.5
@@ -12,6 +15,9 @@ before_install:
 
 install:
     - composer install --no-progress
+
+before_script:
+  - sleep 5 # Ensure mongodb accepts a connection
 
 script:
     - bin/phpunit --exclude-group integration
