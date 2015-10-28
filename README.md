@@ -37,5 +37,11 @@ $ docker cp mongoimport_mongo_1:/offices.json ./tests/fixtures/
 ##### Running tests
 
 ```bash
-$ docker-compose run --entrypoint bin/phpunit composer --exclude-group integration
+$ docker-compose run --entrypoint php composer bin/phpunit
+```
+
+##### Running utility 
+
+```bash
+$ docker-compose run --entrypoint php composer bin/mongoimport -V
 ```
