@@ -34,7 +34,9 @@ class ImportCommand extends Command
     {
         $file = $input->getArgument('file');
         if (!file_exists($file)) {
-            return $output->writeln(sprintf('<error>File "%s" not found.</error>', $file));
+            $output->writeln(sprintf('<error>File "%s" not found.</error>', $file));
+
+            return 1;
         }
 
         $host = $input->getOption('host');
