@@ -22,13 +22,13 @@ Add the following to your composer.json:
 
 ## Usage
 
-Import _movies.json_ into _cinema_ database. Basename of filename without extension was used as a collection name.
+Import _movies.json_ into _hollywood_ database. Basename of filename without extension was used as a collection name.
 
 ```bash
 $ ./bin/mongoimport movies.json --db hollywood
 ```
 
-By default utility connects to mongod running on `localhost:_27017_`. In docker environment default host is `MONGO_PORT_27017_TCP_ADDR` and default port is `MONGO_PORT_27017_TCP_PORT`.
+By default utility connects to mongod running on `localhost:27017`. In docker environment default host is `MONGO_PORT_27017_TCP_ADDR` and default port is `MONGO_PORT_27017_TCP_PORT`.
 
 Specifying custom host, port and collection name:
 
