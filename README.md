@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/dev-machine/mongoimport.svg)](https://travis-ci.org/dev-machine/mongoimport) [![Coverage Status](https://coveralls.io/repos/dev-machine/mongoimport/badge.svg?branch=master&service=github)](https://coveralls.io/github/dev-machine/mongoimport?branch=master)
 
+PHP implementation of [mongoimport](https://docs.mongodb.org/manual/reference/program/mongoimport/).
+
 ## Running in Docker
 
 ##### Init
