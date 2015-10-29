@@ -40,7 +40,7 @@ $ ./bin/mongoimport movies.json -c shows --db hollywood --host <host> -p <port>
 
 To drop existing collection prior to import, use `--drop` flag.
 
-For more info use:
+More info:
 
 ```bash
 $ ./bin/mongoimport -h
