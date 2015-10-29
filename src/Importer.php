@@ -55,10 +55,14 @@ class Importer
 
     /**
      * @param bool $drop
+     *
+     * @return self
      */
     public function setDrop($drop)
     {
         $this->drop = $drop;
+
+        return $this;
     }
 
     /**
