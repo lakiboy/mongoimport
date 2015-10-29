@@ -75,7 +75,17 @@ Example:
 
 ```php
 // Import data.json into collection in default database.
-$total = $this->get('devmachine_mongoimport')->importCollection('data.json', 'collection');
+$total = $this
+    ->get('devmachine_mongoimport')
+    ->importCollection('data.json', 'collection')
+;
+
+// Import in specified db; drop existing collection prior to import.
+$total = $this
+    ->get('devmachine_mongoimport')
+    ->setDrop(true)
+    ->import('data.json', 'collection', 'db')
+;
 ```
 
 ## Contributing
