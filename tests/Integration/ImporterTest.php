@@ -44,11 +44,11 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     {
         $importer = new Importer(static::$mongo, [new JsonLoader()]);
 
-        $result = $importer->importCollection('test', 'employees', __DIR__.'/../fixtures/employees.json');
+        $result = $importer->importCollection(__DIR__.'/../fixtures/employees.json', 'employees', 'test');
         $this->assertSame(10, $result);
         $this->assertEquals(10, static::employees()->count());
 
-        $result = $importer->importCollection('test', 'offices', __DIR__.'/../fixtures/offices.json');
+        $result = $importer->importCollection(__DIR__.'/../fixtures/offices.json', 'offices', 'test');
         $this->assertSame(3, $result);
         $this->assertEquals(3, static::offices()->count());
 

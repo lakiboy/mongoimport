@@ -14,15 +14,27 @@ class AddImporterPass implements CompilerPassInterface
             return;
         }
 
-        $names = array_keys($container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.connections%'));
-        $default = $container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.default_connection%');
+        $names   = array_keys($container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.document_managers%'));
+        $default = $container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.default_document_manager%');
+        $config  = $container->getDefinition(sprintf('doctrine_mongodb.odm.%s_configuration', $default));
 
-        foreach ($names as $name) {
-            $decorator = new DefinitionDecorator('mongoimport.importer_abstract');
-            $decorator->replaceArgument(0, $name);
-            $container->setDefinition('mongoimport.importer.'.$name, $decorator);
+        // Set default database.
+        foreach ($config->getMethodCalls() as $call) {
+            if ($call[0] === 'setDefaultDB') {
+                $container
+                    ->getDefinition('devmachine_mongoimport.importer.factory')
+                    ->replaceArgument(2, $call[1][0])
+                ;
+                break;
+            }
         }
 
-        $container->setAlias('mongoimport.importer', 'mongoimport.importer.'.$default);
+        foreach ($names as $name) {
+            $decorator = new DefinitionDecorator('devmachine_mongoimport.importer');
+            $decorator->replaceArgument(0, $name);
+            $container->setDefinition('devmachine_mongoimport.'.$name, $decorator);
+        }
+
+        $container->setAlias('devmachine_mongoimport', 'devmachine_mongoimport.'.$default);
     }
 }

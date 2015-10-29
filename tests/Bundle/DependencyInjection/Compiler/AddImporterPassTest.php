@@ -16,7 +16,10 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
     protected function registerCompilerPass(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddImporterPass());
-        $container->setParameter('kernel.cache_dir', __DIR__ . '/tmp');
+        $container->setParameter('kernel.debug', true);
+        $container->setParameter('kernel.environment', 'test');
+        $container->setParameter('kernel.root_dir', __DIR__);
+        $container->setParameter('kernel.cache_dir', __DIR__.'/tmp');
     }
 
     /**
@@ -33,6 +36,11 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
                     'server' => 'mongodb://bar:27017',
                 ],
             ],
+            'default_database' => 'baz',
+            'document_managers' => [
+                'foo' => [],
+                'bar' => [],
+            ],
         ];
 
         (new DoctrineMongoDBExtension())->load([$config], $this->container);
@@ -40,12 +48,30 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithParent('mongoimport.importer.foo', 'mongoimport.importer_abstract');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('mongoimport.importer.foo', 'foo');
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'devmachine_mongoimport.importer.factory',
+            2,
+            'baz'
+        );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithParent('mongoimport.importer.bar', 'mongoimport.importer_abstract');
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('mongoimport.importer.bar', 'bar');
+        $this->assertContainerBuilderHasServiceDefinitionWithParent(
+            'devmachine_mongoimport.foo',
+            'devmachine_mongoimport.importer'
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'devmachine_mongoimport.foo',
+            'foo'
+        );
 
-        $this->assertContainerBuilderHasAlias('mongoimport.importer', 'mongoimport.importer.foo');
+        $this->assertContainerBuilderHasServiceDefinitionWithParent(
+            'devmachine_mongoimport.bar',
+            'devmachine_mongoimport.importer'
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'devmachine_mongoimport.bar',
+            'bar'
+        );
+
+        $this->assertContainerBuilderHasAlias('devmachine_mongoimport', 'devmachine_mongoimport.foo');
     }
 }

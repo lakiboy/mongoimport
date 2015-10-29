@@ -12,13 +12,19 @@ class ImporterBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function it_builds_importer()
     {
-        $builder = new ImporterBuilder();
-        $importer = $builder->setHost('test')->setPort(28017)->setDrop(true)->getImporter();
+        $importer = (new ImporterBuilder())
+            ->setHost('test')
+            ->setPort(28017)
+            ->setDefaultDatabase('default_db')
+            ->setDrop(true)
+            ->getImporter()
+        ;
 
         $this->assertInstanceOf('Devmachine\MongoImport\Importer', $importer);
 
         $this->assertEquals('mongodb://test:28017', $this->getProperty($importer, 'mongo')->getServer());
         $this->assertTrue($this->getProperty($importer, 'drop'));
+        $this->assertEquals('default_db', $this->getProperty($importer, 'defaultDatabase'));
     }
 
     /**

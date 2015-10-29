@@ -64,7 +64,7 @@ class ImportCommand extends Command
             ->setPort($port)
             ->setDrop($drop)
             ->getImporter()
-            ->importCollection($db, $col, $file)
+            ->importCollection($file, $col, $db)
         ;
 
         $output->writeln(sprintf('<info>Docs inserted: %d</info>', $total));

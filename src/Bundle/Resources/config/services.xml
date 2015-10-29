@@ -5,25 +5,26 @@
 
     <services>
 
-        <service id="mongoimport.importer.factory" class="Devmachine\MongoImport\Bundle\ImporterFactory" public="false">
+        <service id="devmachine_mongoimport.importer.factory" class="Devmachine\MongoImport\Bundle\ImporterFactory" public="false">
             <argument type="service" id="doctrine_mongodb" />
             <argument type="collection">
-                <argument type="service" id="mongoimport.loader.json" />
+                <argument type="service" id="devmachine_mongoimport.loader.json" />
             </argument>
+            <argument />
         </service>
 
         <!-- Loaders -->
 
-        <service id="mongoimport.loader.json" class="Devmachine\MongoImport\Loader\JsonLoader" public="false" />
+        <service id="devmachine_mongoimport.loader.json" class="Devmachine\MongoImport\Loader\JsonLoader" public="false" />
 
-        <service id="mongoimport.loader.csv" class="Devmachine\MongoImport\Loader\CsvLoader" public="false" />
+        <service id="devmachine_mongoimport.loader.csv" class="Devmachine\MongoImport\Loader\CsvLoader" public="false" />
 
         <!-- Builders -->
 
-        <service id="mongoimport.importer_abstract"
+        <service id="devmachine_mongoimport.importer"
                  class="Devmachine\MongoImport\Importer"
                  abstract="true">
-            <factory service="mongoimport.importer.factory" method="getImporter" />
+            <factory service="devmachine_mongoimport.importer.factory" method="getImporter" />
             <argument />
         </service>
 

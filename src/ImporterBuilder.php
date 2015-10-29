@@ -9,6 +9,7 @@ class ImporterBuilder
 {
     private $port;
     private $host;
+    private $defaultDatabase;
     private $drop = false;
 
     /**
@@ -36,6 +37,18 @@ class ImporterBuilder
     }
 
     /**
+     * @param string $defaultDatabase
+     *
+     * @return self
+     */
+    public function setDefaultDatabase($defaultDatabase)
+    {
+        $this->defaultDatabase = $defaultDatabase;
+
+        return $this;
+    }
+
+    /**
      * @param bool $drop
      *
      * @return self
@@ -57,6 +70,7 @@ class ImporterBuilder
         $importer = new Importer($mongo);
         $importer->addLoader(new JsonLoader());
         $importer->setDrop($this->drop);
+        $importer->setDefaultDatabase($this->defaultDatabase);
 
         return $importer;
     }

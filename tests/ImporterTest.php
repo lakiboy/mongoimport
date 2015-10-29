@@ -31,7 +31,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     public function it_throws_exception_on_unsupported_file_format()
     {
         $importer = new Importer(new Connection());
-        $importer->importCollection('foo', 'bar', 'file.txt');
+        $importer->importCollection('file.txt', 'bar', 'foo');
     }
 
     /**
@@ -48,7 +48,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $importer = new Importer($mongo, [new JsonLoader()]);
-        $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/offices.json');
+        $importer->importCollection(__DIR__.'/fixtures/offices.json', 'bar', 'foo');
     }
 
     /**
@@ -62,7 +62,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $importer = new Importer($mongo, [new JsonLoader()]);
-        $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/employees.json');
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'bar', 'foo');
 
         $this->assertSame(10, $result);
     }
@@ -70,12 +70,14 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_drops_db_and_imports_fixtures()
+    public function it_drops_db_and_imports_fixtures_into_default_database()
     {
         $mongo = $this->getMongoStubWithResult(['ok' => 1, 'err' => null], true);
 
         $importer = new Importer($mongo, [new JsonLoader()]);
-        $result = $importer->importCollection('foo', 'bar', __DIR__.'/fixtures/employees.json');
+        $importer->setDefaultDatabase('foo');
+
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'bar');
 
         $this->assertSame(10, $result);
     }

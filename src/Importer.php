@@ -16,6 +16,8 @@ class Importer
      */
     private $loaders = [];
 
+    private $defaultDatabase;
+
     private $drop = false;
 
     public function __construct(Connection $mongo, array $loaders = [])
@@ -27,6 +29,9 @@ class Importer
         }
     }
 
+    /**
+     * @param Loader $loader
+     */
     public function addLoader(Loader $loader)
     {
         $this->loaders[$loader->getName()] = $loader;
@@ -41,6 +46,14 @@ class Importer
     }
 
     /**
+     * @param string $defaultDatabase
+     */
+    public function setDefaultDatabase($defaultDatabase)
+    {
+        $this->defaultDatabase = $defaultDatabase;
+    }
+
+    /**
      * @param bool $drop
      */
     public function setDrop($drop)
@@ -49,16 +62,16 @@ class Importer
     }
 
     /**
-     * @param string $db
-     * @param string $name
      * @param string $filePath
+     * @param string $name
+     * @param string $db
      *
      * @return int
      *
      * @throws UnsupportedFileFormatException
      * @throws ImportException
      */
-    public function importCollection($db, $name, $filePath)
+    public function importCollection($filePath, $name, $db = null)
     {
         $format = pathinfo($filePath, PATHINFO_EXTENSION);
 
@@ -69,7 +82,7 @@ class Importer
         $data = $this->loaders[$format]->loadFile($filePath);
         $data = array_map('Devmachine\MongoImport\ExtendedJson::fromStrict', $data);
 
-        $col = $this->mongo->selectCollection($db, $name);
+        $col = $this->mongo->selectCollection($db ?: $this->defaultDatabase, $name);
 
         if ($this->drop) {
             $col->drop();

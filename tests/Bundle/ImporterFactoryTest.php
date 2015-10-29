@@ -23,7 +23,7 @@ class ImporterFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ImporterFactory($mongo, [
             $json = new JsonLoader(),
             $csv  = new CsvLoader(),
-        ]);
+        ], 'default_db');
 
         $mongo
             ->method('getConnection')
