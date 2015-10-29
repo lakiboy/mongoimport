@@ -8,6 +8,8 @@ PHP implementation of [mongoimport](https://docs.mongodb.org/manual/reference/pr
 
 Why would you need a custom _mongoimport_ instead of default utility supplied with mongo? In certain setup (read Docker) mongo client is not available. With _mongo_ extension enabled in PHP, you can import JSON created by mongoexport with this tiny library.
 
+Provides integration with [Symfony](http://symfony.com/) (read below), therefore could be used as fixtures loader.
+
 ## Installation 
 
 Add the following to your composer.json:
@@ -44,7 +46,41 @@ For more info use:
 $ ./bin/mongoimport -h
 ```
 
-## Running in Docker
+## Symfony integration
+
+Register bundle in the kernel:
+
+```php
+<?php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        
+        new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+        new Devmachine\MongoImport\Bundle\DevmachineMongoImportBundle(),
+    );
+}
+```
+
+When _DoctrineMongoDBBundle_ is enabled it registers the importer in container for each _ODM_ manager e.g.
+
+ - `devmachine_mongoimport.default` (for _default_ manager)
+ - `devmachine_mongoimport.secondary` (for _secondary_ manager)
+ - `devmachine_mongoimport` service is aliased wih default one.
+ 
+Example:
+
+```php
+// Import data.json into collection in default database.
+$total = $this->get('devmachine_mongoimport')->importCollection('data.json', 'collection');
+```
+
+## Contributing
+
+Find below variuos docker commands.
 
 ##### Init
 
