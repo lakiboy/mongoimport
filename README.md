@@ -69,7 +69,7 @@ When _DoctrineMongoDBBundle_ is enabled it registers the importer in container f
 
  - `devmachine_mongoimport.default` (for _default_ manager)
  - `devmachine_mongoimport.secondary` (for _secondary_ manager)
- - `devmachine_mongoimport` service is aliased wih default one.
+ - `devmachine_mongoimport` alias for _default_ importer.
  
 Example:
 
@@ -80,7 +80,7 @@ $total = $this->get('devmachine_mongoimport')->importCollection('data.json', 'co
 
 ## Contributing
 
-Find below variuos docker commands.
+Find below various docker commands.
 
 ##### Init
 
