@@ -3,7 +3,7 @@
 namespace Devmachine\MongoImport\Tests\Bundle\DependencyInjection\Compiler;
 
 use Devmachine\MongoImport\Bundle\DependencyInjection\Compiler\AddImporterPass;
-use Devmachine\MongoImport\Bundle\DependencyInjection\MongoImportExtension;
+use Devmachine\MongoImport\Bundle\DependencyInjection\DevmachineMongoImportExtension;
 use Doctrine\Bundle\MongoDBBundle\DependencyInjection\DoctrineMongoDBExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -44,7 +44,7 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
         ];
 
         (new DoctrineMongoDBExtension())->load([$config], $this->container);
-        (new MongoImportExtension())->load([], $this->container);
+        (new DevmachineMongoImportExtension())->load([], $this->container);
 
         $this->compile();
 

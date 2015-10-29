@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class MongoImportExtension extends Extension
+class DevmachineMongoImportExtension extends Extension
 {
     public function load(array $config, ContainerBuilder $container)
     {
