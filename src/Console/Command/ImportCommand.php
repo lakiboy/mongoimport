@@ -41,8 +41,8 @@ class ImportCommand extends Command
 
         $host = $input->getOption('host');
         $port = $input->getOption('port');
-        $col  = $input->getOption('collection');
         $db   = $input->getOption('db');
+        $col  = $input->getOption('collection');
         $drop = $input->hasOption('drop');
 
         if (!$host) {
@@ -52,19 +52,13 @@ class ImportCommand extends Command
             $port = getenv('MONGO_PORT_27017_TCP_PORT') ?: 27017;
         }
 
-        if (!$col) {
-            $col = pathinfo($file, PATHINFO_BASENAME);
-            if (false !== ($pos = strrpos($col, '.'))) {
-                $col = substr($col, 0, $pos);
-            }
-        }
-
         $total = (new ImporterBuilder())
             ->setHost($host)
             ->setPort($port)
+            ->setDefaultDatabase($db)
             ->setDrop($drop)
             ->getImporter()
-            ->importCollection($file, $col, $db)
+            ->importCollection($file, $col)
         ;
 
         $output->writeln(sprintf('<info>Docs inserted: %d</info>', $total));

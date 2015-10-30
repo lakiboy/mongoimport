@@ -22,13 +22,21 @@ class ImporterBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Devmachine\MongoImport\Importer', $importer);
 
+        // Test connection was set.
         $this->assertEquals('mongodb://test:28017', $this->getProperty($importer, 'mongo')->getServer());
-        $this->assertTrue($this->getProperty($importer, 'drop'));
+
+        // Check options.
+        $this->assertTrue($this->getProperty($importer, 'defaultOptions')['drop']);
+
+        // Check default database was set.
         $this->assertEquals('default_db', $this->getProperty($importer, 'defaultDatabase'));
+
+        // Check default loader is registered.
+        $this->assertInstanceOf('Devmachine\MongoImport\Loader\JsonLoader', $this->getProperty($importer, 'loaders')['json']);
     }
 
     /**
-     * Use this hack to avoid exposing stage of Importer.
+     * Use this hack to avoid exposing state of Importer.
      *
      * @param Importer $importer
      * @param string   $name

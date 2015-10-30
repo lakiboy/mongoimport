@@ -10,28 +10,14 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     */
-    public function it_registers_loaders()
-    {
-        $importer = new Importer(new Connection());
-        $importer->addLoader($loader = new JsonLoader());
-
-        $loaders = $importer->getLoaders();
-
-        $this->assertArrayHasKey('json', $loaders);
-        $this->assertSame($loader, $loaders['json']);
-    }
-
-    /**
-     * @test
      *
      * @expectedException \Devmachine\MongoImport\Exception\UnsupportedFileFormatException
      * @expectedExceptionMessage File of format "txt" is not supported.
      */
     public function it_throws_exception_on_unsupported_file_format()
     {
-        $importer = new Importer(new Connection());
-        $importer->importCollection('file.txt', 'bar', 'foo');
+        $importer = new Importer(new Connection(), 'test_db', [new JsonLoader()]);
+        $importer->importCollection('file.txt');
     }
 
     /**
@@ -45,24 +31,24 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $mongo = $this->getMongoStubWithResult([
             'ok' => 0,
             'err' => 'Something went wrong',
-        ]);
+        ], 'offices', 'test_db');
 
-        $importer = new Importer($mongo, [new JsonLoader()]);
-        $importer->importCollection(__DIR__.'/fixtures/offices.json', 'bar', 'foo');
+        $importer = new Importer($mongo, 'test_db', [new JsonLoader()]);
+        $importer->importCollection(__DIR__.'/fixtures/offices.json');
     }
 
     /**
      * @test
      */
-    public function it_imports_fixtures()
+    public function it_imports_fixtures_into_default_db_and_collection()
     {
         $mongo = $this->getMongoStubWithResult([
             'ok' => 1,
             'err' => null,
-        ]);
+        ], 'employees', 'test_db');
 
-        $importer = new Importer($mongo, [new JsonLoader()]);
-        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'bar', 'foo');
+        $importer = new Importer($mongo, 'test_db', [new JsonLoader()]);
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json');
 
         $this->assertSame(10, $result);
     }
@@ -70,25 +56,76 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_drops_db_and_imports_fixtures_into_default_database()
+    public function it_imports_fixtures_with_specified_db_and_collection()
     {
-        $mongo = $this->getMongoStubWithResult(['ok' => 1, 'err' => null], true);
+        $mongo = $this->getMongoStubWithResult([
+            'ok' => 1,
+            'err' => null,
+        ], 'personnel', 'company');
 
-        $importer = new Importer($mongo, [new JsonLoader()]);
-        $importer->setDefaultDatabase('foo');
-
-        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'bar');
+        $importer = new Importer($mongo, 'test_db', [new JsonLoader()]);
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'personnel', 'company');
 
         $this->assertSame(10, $result);
     }
 
     /**
-     * @param array $result
-     * @param bool  $drop
+     * @test
+     */
+    public function it_drops_db_prior_to_import_into_default_db_and_collection()
+    {
+        $mongo = $this->getMongoStubWithResult([
+            'ok' => 1,
+            'err' => null,
+        ], 'employees', 'test_db', true);
+
+        $importer = new Importer($mongo, 'test_db', [new JsonLoader()]);
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', ['drop' => true]);
+
+        $this->assertSame(10, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_drops_db_prior_to_import_info_default_db()
+    {
+        $mongo = $this->getMongoStubWithResult([
+            'ok' => 1,
+            'err' => null,
+        ], 'personnel', 'test_db', true);
+
+        $importer = new Importer($mongo, 'test_db', [new JsonLoader()]);
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'personnel', ['drop' => true]);
+
+        $this->assertSame(10, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_drops_db_prior_to_import()
+    {
+        $mongo = $this->getMongoStubWithResult([
+            'ok' => 1,
+            'err' => null,
+        ], 'personnel', 'company', true);
+
+        $importer = new Importer($mongo, 'test_db', [new JsonLoader()]);
+        $result = $importer->importCollection(__DIR__.'/fixtures/employees.json', 'personnel', 'company', ['drop' => true]);
+
+        $this->assertSame(10, $result);
+    }
+
+    /**
+     * @param array  $result
+     * @param string $collectionName
+     * @param string $dbName
+     * @param bool   $drop
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function getMongoStubWithResult(array $result, $drop = false)
+    private function getMongoStubWithResult(array $result, $collectionName, $dbName, $drop = false)
     {
         $collection = $this->getMockBuilder('Doctrine\MongoDB\Collection')
             ->disableOriginalConstructor()
@@ -104,7 +141,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         ;
         $mongo
             ->method('selectCollection')
-            ->with($this->equalTo('foo'), $this->equalTo('bar'))
+            ->with($this->equalTo($dbName), $this->equalTo($collectionName))
             ->willReturn($collection)
         ;
 

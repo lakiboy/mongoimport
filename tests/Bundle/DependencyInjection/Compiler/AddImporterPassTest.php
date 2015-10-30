@@ -7,6 +7,7 @@ use Devmachine\MongoImport\Bundle\DependencyInjection\DevmachineMongoImportExten
 use Doctrine\Bundle\MongoDBBundle\DependencyInjection\DoctrineMongoDBExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @group bundle
@@ -36,7 +37,7 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
                     'server' => 'mongodb://bar:27017',
                 ],
             ],
-            'default_database' => 'baz',
+            'default_database' => 'default_db',
             'document_managers' => [
                 'foo' => [],
                 'bar' => [],
@@ -48,28 +49,34 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'devmachine_mongoimport.importer.factory',
-            2,
-            'baz'
-        );
-
         $this->assertContainerBuilderHasServiceDefinitionWithParent(
             'devmachine_mongoimport.foo',
-            'devmachine_mongoimport.importer'
+            'devmachine_mongoimport.importer.base'
         );
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'devmachine_mongoimport.foo',
-            'foo'
+            0,
+            new Reference('doctrine_mongodb.odm.foo_document_manager')
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'devmachine_mongoimport.foo',
+            1,
+            'default_db'
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithParent(
             'devmachine_mongoimport.bar',
-            'devmachine_mongoimport.importer'
+            'devmachine_mongoimport.importer.base'
         );
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'devmachine_mongoimport.bar',
-            'bar'
+            0,
+            new Reference('doctrine_mongodb.odm.bar_document_manager')
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'devmachine_mongoimport.bar',
+            1,
+            'default_db'
         );
 
         $this->assertContainerBuilderHasAlias('devmachine_mongoimport', 'devmachine_mongoimport.foo');

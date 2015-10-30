@@ -67,11 +67,6 @@ class ImporterBuilder
     {
         $mongo = new Connection(sprintf('mongodb://%s:%s', $this->host, $this->port));
 
-        $importer = new Importer($mongo);
-        $importer->addLoader(new JsonLoader());
-        $importer->setDrop($this->drop);
-        $importer->setDefaultDatabase($this->defaultDatabase);
-
-        return $importer;
+        return new Importer($mongo, $this->defaultDatabase, [new JsonLoader()], ['drop' => $this->drop]);
     }
 }

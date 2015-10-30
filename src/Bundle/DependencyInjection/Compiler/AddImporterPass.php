@@ -5,6 +5,7 @@ namespace Devmachine\MongoImport\Bundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Reference;
 
 class AddImporterPass implements CompilerPassInterface
 {
@@ -14,27 +15,32 @@ class AddImporterPass implements CompilerPassInterface
             return;
         }
 
-        $names   = array_keys($container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.document_managers%'));
-        $default = $container->getParameterBag()->resolveValue('%doctrine_mongodb.odm.default_document_manager%');
-        $config  = $container->getDefinition(sprintf('doctrine_mongodb.odm.%s_configuration', $default));
+        $managers = $container
+            ->getParameterBag()
+            ->resolveValue('%doctrine_mongodb.odm.document_managers%')
+        ;
+        $defaultManager = $container
+            ->getParameterBag()
+            ->resolveValue('%doctrine_mongodb.odm.default_document_manager%')
+        ;
+        $defaultDatabase = null;
 
-        // Set default database.
+        // Get default database.
+        $config = $container->getDefinition(sprintf('doctrine_mongodb.odm.%s_configuration', $defaultManager));
         foreach ($config->getMethodCalls() as $call) {
             if ($call[0] === 'setDefaultDB') {
-                $container
-                    ->getDefinition('devmachine_mongoimport.importer.factory')
-                    ->replaceArgument(2, $call[1][0])
-                ;
+                $defaultDatabase = $call[1][0];
                 break;
             }
         }
 
-        foreach ($names as $name) {
-            $decorator = new DefinitionDecorator('devmachine_mongoimport.importer');
-            $decorator->replaceArgument(0, $name);
+        foreach ($managers as $name => $id) {
+            $decorator = new DefinitionDecorator('devmachine_mongoimport.importer.base');
+            $decorator->replaceArgument(0, new Reference($id));
+            $decorator->replaceArgument(1, $defaultDatabase);
             $container->setDefinition('devmachine_mongoimport.'.$name, $decorator);
         }
 
-        $container->setAlias('devmachine_mongoimport', 'devmachine_mongoimport.'.$default);
+        $container->setAlias('devmachine_mongoimport', 'devmachine_mongoimport.'.$defaultManager);
     }
 }

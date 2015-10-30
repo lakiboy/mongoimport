@@ -42,13 +42,13 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_imports_fixtures()
     {
-        $importer = new Importer(static::$mongo, [new JsonLoader()]);
+        $importer = new Importer(static::$mongo, 'test', [new JsonLoader()]);
 
-        $result = $importer->importCollection(__DIR__.'/../fixtures/employees.json', 'employees', 'test');
+        $result = $importer->importCollection(__DIR__.'/../fixtures/employees.json');
         $this->assertSame(10, $result);
         $this->assertEquals(10, static::employees()->count());
 
-        $result = $importer->importCollection(__DIR__.'/../fixtures/offices.json', 'offices', 'test');
+        $result = $importer->importCollection(__DIR__.'/../fixtures/offices.json');
         $this->assertSame(3, $result);
         $this->assertEquals(3, static::offices()->count());
 
