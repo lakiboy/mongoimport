@@ -2,7 +2,7 @@
 
 namespace Devmachine\MongoImport\Tests\Bundle\DependencyInjection\Compiler;
 
-use Devmachine\MongoImport\Bundle\DependencyInjection\Compiler\AddImporterPass;
+use Devmachine\MongoImport\Bundle\DependencyInjection\Compiler\AddImportersPass;
 use Devmachine\MongoImport\Bundle\DependencyInjection\DevmachineMongoImportExtension;
 use Doctrine\Bundle\MongoDBBundle\DependencyInjection\DoctrineMongoDBExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
@@ -16,7 +16,7 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
 {
     protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new AddImporterPass());
+        $container->addCompilerPass(new AddImportersPass());
         $container->setParameter('kernel.debug', true);
         $container->setParameter('kernel.environment', 'test');
         $container->setParameter('kernel.root_dir', __DIR__);

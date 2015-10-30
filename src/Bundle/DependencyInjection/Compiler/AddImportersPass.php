@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
-class AddImporterPass implements CompilerPassInterface
+class AddImportersPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
