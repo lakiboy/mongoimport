@@ -24,7 +24,7 @@ Add the following to your composer.json:
 
 ## Usage
 
-Import _movies.json_ into _hollywood_ database. Basename of filename without extension was used as a collection name.
+Import _movies.json_ into _hollywood_ database. Collection name is figured out automatically by using file's basename without extension.
 
 ```bash
 $ ./bin/mongoimport movies.json --db hollywood
@@ -32,7 +32,7 @@ $ ./bin/mongoimport movies.json --db hollywood
 
 By default utility connects to mongod running on `localhost:27017`. In docker environment default host is `MONGO_PORT_27017_TCP_ADDR` and default port is `MONGO_PORT_27017_TCP_PORT`.
 
-Specifying custom host, port and collection name:
+Overwriting default host, port and collection name:
 
 ```bash
 $ ./bin/mongoimport movies.json -c shows --db hollywood --host <host> -p <port>
@@ -74,17 +74,28 @@ When _DoctrineMongoDBBundle_ is enabled it registers the importer in container f
 Example:
 
 ```php
-// Import data.json into collection in default database.
+// Import movies.json into "movies" collection in default database.
 $total = $this
     ->get('devmachine_mongoimport')
-    ->importCollection('data.json', 'collection')
+    ->importCollection('movies.json')
 ;
 
-// Import in specified db; drop existing collection prior to import.
+// Drop existing collection prior to import.
 $total = $this
     ->get('devmachine_mongoimport')
-    ->setDrop(true)
-    ->import('data.json', 'collection', 'db')
+    ->import('movies.json', ['drop' => true])
+;
+
+// With specified collection name.
+$total = $this
+    ->get('devmachine_mongoimport')
+    ->import('movies.json', 'films', ['drop' => true])
+;
+
+// With specified collection and db.
+$total = $this
+    ->get('devmachine_mongoimport')
+    ->import('movies.json', 'films', 'hollywood', ['drop' => true])
 ;
 ```
 
