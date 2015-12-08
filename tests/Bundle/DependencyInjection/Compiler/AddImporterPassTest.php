@@ -56,7 +56,7 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'devmachine_mongoimport.foo',
             0,
-            new Reference('doctrine_mongodb.odm.foo_document_manager')
+            new Reference('doctrine_mongodb.odm.foo_connection')
         );
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'devmachine_mongoimport.foo',
@@ -71,7 +71,7 @@ class AddImporterPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'devmachine_mongoimport.bar',
             0,
-            new Reference('doctrine_mongodb.odm.bar_document_manager')
+            new Reference('doctrine_mongodb.odm.bar_connection')
         );
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'devmachine_mongoimport.bar',

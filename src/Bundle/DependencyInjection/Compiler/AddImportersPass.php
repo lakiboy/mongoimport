@@ -17,7 +17,7 @@ class AddImportersPass implements CompilerPassInterface
 
         $managers = $container
             ->getParameterBag()
-            ->resolveValue('%doctrine_mongodb.odm.document_managers%')
+            ->resolveValue('%doctrine_mongodb.odm.connections%')
         ;
         $defaultManager = $container
             ->getParameterBag()
