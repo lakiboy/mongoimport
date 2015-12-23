@@ -10,7 +10,7 @@
         { "name": "Dmitri Lakachauskis", "email": "dmitri@devmachine.net" }
     ],
     "require": {
-        "php": "^5.4|^7.0",
+        "php": ">=5.4.0",
         "doctrine/mongodb": "^1.2",
         "beberlei/assert": "^2.4"
     },
